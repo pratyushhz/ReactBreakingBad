@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from "react";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import Header from "./components/Header";
+// import {Route, Switch, Redirect } from "react-router-dom";
+// import Home from "./components/Home";
+// import Details from "./components/Details";
+// import Navbar from "./components/Navbar";
+import { Box } from "@material-ui/core";
+import {fetchData} from "./Service/Api";
+import Characters from "./components/Characters"
+const App = () => {
+    // usestate
+    const [text, setText] = useState("");
+    const [data, setData] = useState([]);
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    useEffect(() => {
+        const getData = async () => {
+           const result = await fetchData(text);
+           setData(result.data);
+           console.log(result);
+        }
+        getData(text);
+    }, []);
+
+    const getText = (inputText) => {
+        setText(inputText)
+        console.log(inputText);
+    }
+
+    return(
+        
+        <Box>
+
+            <Header valueInput={getText}/>
+            <Characters apiData= {data}/>
+            {/* <Header />
+            <Navbar />
+            <Switch>
+                <Route exact path="/" component={ Home } />
+                <Route exact path="/details" component={ Details } />
+                <Redirect to="/" />
+            </Switch> */}
+            
+        </Box>
+
+        
+    )
 }
-
 export default App;
